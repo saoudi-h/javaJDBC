@@ -5,36 +5,42 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Properties;
-
 public class Main {
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, SQLException {
 
-        ArrayList<User> users = new ArrayList<>();
-        try{
-            Connection connexion = DatabaseManager.getConnection();
-            Statement statement = connexion.createStatement();
+        // initialisation
 
-            // Exécuter une requête
-            ResultSet resultSet = statement.executeQuery("SELECT * FROM user");
+        UserModel model = new UserModel();
 
-            // Parcourir les résultats de la requête
-            while (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String userName = resultSet.getString("user");
-                String pwd = resultSet.getString("password");
-                User.Role role = User.Role.valueOf(resultSet.getString("role"));
-                User tempUser = new User(id,userName,pwd,role);
-                users.add(tempUser);
-                System.out.println(tempUser);
+        // test create
+        User celine = new User(-1,"celine","dion",User.Role.USER);
 
-            }
+        celine = model.create(celine);
+        System.out.println("#".repeat(50));
 
-            resultSet.close();
-            statement.close();
-            connexion.close();
+        // test update celine
+        celine.setUser("Lara");
+        System.out.println(celine);
+        System.out.println("#".repeat(50));
+        model.update(celine);
 
-        }catch(SQLException e) {
-            e.printStackTrace();
+        // test findOne
+        System.out.println(model.findOne(2));
+
+
+        System.out.println("#".repeat(50));
+        // test findAll
+        User[] users = model.findAll();
+        for(User u:users){
+            System.out.println(u);
         }
+
+        // supression de céline dion
+        if(model.delete(celine)){
+            System.out.println("céline a bien été supprimé");
+        }else{
+            System.out.println("Erreur de supression");
+        }
+
     }
 }
