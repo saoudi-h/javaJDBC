@@ -1,7 +1,8 @@
 
-![JavaUtils](images/javautils.png)
+[//]: # (![JavaUtils]&#40;images/javaJDBC.png&#41;)
 
-}
+[//]: # ()
+[//]: # (})
 
 
 # javaUtils - Bibliothèque Java pour les structures de données
