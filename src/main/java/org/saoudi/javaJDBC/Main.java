@@ -1,4 +1,4 @@
-package org.example;
+package org.saoudi.javaJDBC;
 
 import java.sql.*;
 import java.util.ArrayList;
