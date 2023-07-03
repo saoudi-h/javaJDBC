@@ -1,8 +1,8 @@
 
-[//]: # (![JavaUtils]&#40;images/javaJDBC.png&#41;)
+![JavaUtils](images/javaJDBC.png)
 
-[//]: # ()
-[//]: # (})
+
+}
 
 
 # javaUtils - Bibliothèque Java pour les structures de données
@@ -52,4 +52,4 @@ Ce mini projet est sous licence [MIT](https://opensource.org/licenses/MIT).
 ## Contributeurs
 
 ![Développé par Hakim Saoudi dans le cadre de sa formation de concepteur développeur d'application.
-](images/hakimsaoudi_javaUtils.png)
+](images/hakimsaoudi_javaJDBC.png)
