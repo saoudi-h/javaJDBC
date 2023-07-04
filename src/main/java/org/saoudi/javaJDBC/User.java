@@ -7,6 +7,7 @@ import java.util.Objects;
  */
 public class User {
 
+
     /**
      * Rôles possibles d'un utilisateur.
      */
@@ -16,7 +17,8 @@ public class User {
     }
 
     private int id;
-    private String user;
+    private String userName;
+    private String email;
     private String password;
     private Role role;
 
@@ -24,7 +26,7 @@ public class User {
      * Constructeur par défaut de la classe User.
      */
     public User() {
-        this(0, "", "", Role.USER);
+        this(0, "", "","", Role.USER);
     }
 
     /**
@@ -35,9 +37,10 @@ public class User {
      * @param password le mot de passe de l'utilisateur
      * @param role     le rôle de l'utilisateur
      */
-    public User(int id, String user, String password, Role role) {
+    public User(int id, String userName,String email, String password, Role role) {
         this.id = id;
-        this.user = user;
+        this.userName = userName;
+        this.email = email;
         this.password = password;
         this.role = role;
     }
@@ -50,14 +53,22 @@ public class User {
         this.id = id;
     }
 
-    public String getUser() {
-        return user;
+    public String getUserName() {
+        return userName;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUserName(String userName) {
+        this.userName = userName;
     }
 
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
     public String getPassword() {
         return password;
     }
@@ -75,25 +86,27 @@ public class User {
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        return id == user.id;
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
-    @Override
     public String toString() {
         return "User{" +
                 "id=" + id +
-                ", user='" + user + '\'' +
+                ", userName='" + userName + '\'' +
+                ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", role=" + role +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return Objects.equals(email, user.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(email);
+    }
+
 }
