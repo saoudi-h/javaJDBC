@@ -6,7 +6,7 @@ import java.util.ArrayList;
 /**
  * Cette classe gère les opérations CRUD (Create, Read, Update, Delete) sur la table "user" dans une base de données.
  */
-public class UserModel {
+public class UserModel implements ModelInterface<User> {
     private Connection connection;
 
     /**
@@ -24,6 +24,7 @@ public class UserModel {
      * @return L'utilisateur correspondant à l'identifiant, ou null s'il n'existe pas.
      * @throws SQLException Si une erreur SQL se produit.
      */
+    @Override
     public User find(int id) throws SQLException {
         return this.find("id",Integer.toString(id));
     }
@@ -35,10 +36,10 @@ public class UserModel {
      * @return L'utilisateur correspondant à l'identifiant, ou null s'il n'existe pas.
      * @throws SQLException Si une erreur SQL se produit.
      */
+    @Override
     public User find(String email) throws SQLException {
         return this.find("email",email);
     }
-
 
     /**
      * Recherche et renvoie un utilisateur correspondant à l'identifiant donné par by dans la valeur est value.
@@ -48,7 +49,7 @@ public class UserModel {
      * @return L'utilisateur correspondant à l'identifiant, ou null s'il n'existe pas.
      * @throws SQLException Si une erreur SQL se produit.
      */
-    private User find(String by,String value) throws SQLException {
+    public User find(String by,String value) throws SQLException {
         String sql = "SELECT * FROM user WHERE " + by + " = ?";
 
         PreparedStatement statement = connection.prepareStatement(sql);
@@ -67,12 +68,14 @@ public class UserModel {
     }
 
 
+
     /**
      * Renvoie tous les utilisateurs de la table "user".
      *
      * @return Un tableau d'utilisateurs.
      * @throws SQLException Si une erreur SQL se produit.
      */
+    @Override
     public User[] findAll() throws SQLException {
         ArrayList<User> users = new ArrayList<>();
         String sql = "SELECT * FROM user where 1";
@@ -100,6 +103,7 @@ public class UserModel {
      * @return L'utilisateur créé avec son identifiant mis à jour.
      * @throws SQLException Si une erreur SQL se produit.
      */
+    @Override
     public User create(User user) throws SQLException {
         String sql = "INSERT INTO user (userName,email, password, role) VALUES (?,? ,?, ?)";
         PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
@@ -125,6 +129,7 @@ public class UserModel {
      * @param user L'utilisateur à mettre à jour.
      * @throws SQLException Si une erreur SQL se produit.
      */
+    @Override
     public void update(User user) throws SQLException {
         String sql = "Update user set userName=?,email=?, password=?, role=? WHERE id=?";
         PreparedStatement statement = connection.prepareStatement(sql);
@@ -144,6 +149,7 @@ public class UserModel {
      * @return true si la suppression a réussi, false sinon.
      * @throws SQLException Si une erreur SQL se produit.
      */
+    @Override
     public boolean delete(User user) throws SQLException {
         String sql = "DELETE FROM user WHERE id = ?";
 
@@ -161,6 +167,7 @@ public class UserModel {
      * @return true si l'enregistrement a réussi, false sinon.
      * @throws SQLException Si une erreur SQL se produit.
      */
+    @Override
     public User save(User user) throws SQLException {
         String sql = "INSERT INTO user (userName,email, password, role)\n" +
                 "VALUES (?,?,?,?)\n" +
@@ -186,26 +193,7 @@ public class UserModel {
 
 
 
-    /**
-     * Vérifie si un utilisateur avec l'email donné existe dans la base de données.
-     *
-     * @param email L'identifiant de l'utilisateur à vérifier.
-     * @return true si l'utilisateur existe, false sinon.
-     * @throws SQLException Si une erreur SQL se produit.
-     */
-    public boolean exists(String email) throws SQLException {
-        return this.exists("email",email);
-    }
-    /**
-     * Vérifie si un utilisateur avec l'identifiant donné existe dans la base de données.
-     *
-     * @param id L'identifiant de l'utilisateur à vérifier.
-     * @return true si l'utilisateur existe, false sinon.
-     * @throws SQLException Si une erreur SQL se produit.
-     */
-    public boolean exists(int id) throws SQLException {
-        return this.exists("id",Integer.toString(id));
-    }
+
     /**
      * Vérifie si un utilisateur avec l'identifiant 'by' existe dans la base de données.
      *
@@ -214,7 +202,10 @@ public class UserModel {
      * @return true si l'utilisateur existe, false sinon.
      * @throws SQLException Si une erreur SQL se produit.
      */
-    private boolean exists(String by, String value) throws SQLException {
+
+
+    @Override
+    public boolean exists(String by, String value) throws SQLException {
         String sql = "SELECT COUNT(*) AS count FROM user WHERE "+by+" = ?";
 
         PreparedStatement statement = connection.prepareStatement(sql);
@@ -227,6 +218,28 @@ public class UserModel {
             return false;
         }
     }
+    /**
+     * Vérifie si un utilisateur avec l'email donné existe dans la base de données.
+     *
+     * @param email L'identifiant de l'utilisateur à vérifier.
+     * @return true si l'utilisateur existe, false sinon.
+     * @throws SQLException Si une erreur SQL se produit.
+     */
+    @Override
+    public boolean exists(String email) throws SQLException {
+        return this.exists("email",email);
+    }
+    /**
+     * Vérifie si un utilisateur avec l'identifiant donné existe dans la base de données.
+     *
+     * @param id L'identifiant de l'utilisateur à vérifier.
+     * @return true si l'utilisateur existe, false sinon.
+     * @throws SQLException Si une erreur SQL se produit.
+     */
+    @Override
+    public boolean exists(int id) throws SQLException {
+        return this.exists("id",Integer.toString(id));
+    }
 
     /**
      * Compte le nombre total d'utilisateurs dans la base de données.
@@ -234,6 +247,7 @@ public class UserModel {
      * @return Le nombre total d'utilisateurs.
      * @throws SQLException Si une erreur SQL se produit.
      */
+    @Override
     public int count() throws SQLException {
         String sql = "SELECT COUNT(*) AS count FROM user";
 
